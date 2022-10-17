@@ -2,10 +2,10 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
+using Photon.Realtime;
 using static PlayerControl;
 
-public class PlayerControl : MonoBehaviourPunCallbacks
+public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
 {
 	[SerializeField]
 	private GameObject[] models;
@@ -27,6 +27,11 @@ public class PlayerControl : MonoBehaviourPunCallbacks
     private GameObject playerUiPrefab;
     public static GameObject LocalPlayerInstance;
 
+    [SerializeField]
+    private int weaponState = 0;
+    [SerializeField]
+    private int playerType = 0;
+
     private float hValue = 0.0f;
 	private float vValue = 0.0f;
 	private float mouseX = 0.0f;
@@ -39,10 +44,12 @@ public class PlayerControl : MonoBehaviourPunCallbacks
 
 	private Vector3 direction;
 
-	private Animator animator;
+    private Animator animator;
+
 	private Rigidbody _rigidbody;
 
 	private readonly int hashMoveSpeed = Animator.StringToHash("PlayerMoveSpeed");
+	private readonly int hashType = Animator.StringToHash("PlayerType");
 
 	private bool isAttacking = false;
 	private bool isComboEnable = false;
@@ -63,12 +70,13 @@ public class PlayerControl : MonoBehaviourPunCallbacks
 		TWO_HAND_SWORD
 	}
 
+	[SerializeField]
 	private MotionState motionState = MotionState.ONE_HAND_SWORD;
 
-	[SerializeField]
+	/*[SerializeField]
 	private RuntimeAnimatorController oneHandController;
 	[SerializeField]
-	private RuntimeAnimatorController twoHandController;
+	private RuntimeAnimatorController twoHandController;*/
 
 	[SerializeField]
 	private GameObject rightHandEquip;
@@ -128,6 +136,9 @@ public class PlayerControl : MonoBehaviourPunCallbacks
             Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
         }
 
+        models[selectedModelNum].SetActive(true);
+		//SetAnimatorController(oneHandController);
+
 #if UNITY_5_4_OR_NEWER
         // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
@@ -135,17 +146,49 @@ public class PlayerControl : MonoBehaviourPunCallbacks
             this.CalledOnLevelWasLoaded(scene.buildIndex);
         };
 #endif
+    }
 
-        models[selectedModelNum].SetActive(true);
-		SetAnimatorController(oneHandController);
-	}
-
-	private void Update()
+    private void Update()
 	{
         if (!photonView.IsMine)
         {
 			return;
         }
+
+        if (Input.GetKey(KeyCode.Alpha1))//한손검
+        {
+            weaponState = 1;
+            /*			ChangeWeapon(rightHandEquip, rightWeapons[0], MotionState.ONE_HAND_SWORD);
+                        SetAnimatorController(oneHandController);*/
+            this.ChangeWeapon(rightHandEquip, rightWeapons[0], MotionState.ONE_HAND_SWORD);
+			//this.SetAnimatorController(oneHandController);
+			playerType = 0;
+            animator.SetInteger("PlayerType", playerType);
+        }
+
+        if (Input.GetKey(KeyCode.Alpha2))//두손검
+        {
+            weaponState = 2;
+            /*			ChangeWeapon(rightHandEquip, rightWeapons[1], MotionState.TWO_HAND_SWORD);
+                        SetAnimatorController(twoHandController);*/
+            this.ChangeWeapon(rightHandEquip, rightWeapons[1], MotionState.TWO_HAND_SWORD);
+			//this.SetAnimatorController(twoHandController);
+			playerType = 1;
+            animator.SetInteger("PlayerType", playerType);
+        }
+
+        if (Input.GetKey(KeyCode.Alpha3))//방패
+        {
+            weaponState = 3;
+            /*			ChangeWeapon(leftHandEquip, leftWeapons[0], MotionState.ONE_HAND_SWORD);
+                        SetAnimatorController(oneHandController);*/
+			this.ChangeWeapon(leftHandEquip, leftWeapons[0], MotionState.ONE_HAND_SWORD);
+			//this.SetAnimatorController(oneHandController);
+			playerType = 0;
+            animator.SetInteger("PlayerType", playerType);
+        }
+
+
 
         if (Input.GetMouseButtonDown(0))
 		{
@@ -158,27 +201,11 @@ public class PlayerControl : MonoBehaviourPunCallbacks
 		}
 
 		//모션 애니메이터 컨트롤러, 무기체인지 Test용
-		if (Input.GetKey(KeyCode.Alpha1))//한손검
-		{
-			ChangeWeapon(rightHandEquip, rightWeapons[0], MotionState.ONE_HAND_SWORD);
-			SetAnimatorController(oneHandController);
-		}
+		
 
-		if (Input.GetKey(KeyCode.Alpha2))//두손검
-		{
-			ChangeWeapon(rightHandEquip, rightWeapons[1], MotionState.TWO_HAND_SWORD);
-			SetAnimatorController(twoHandController);
-		}
 
-		if (Input.GetKey(KeyCode.Alpha3))//방패
-		{
-			ChangeWeapon(leftHandEquip, leftWeapons[0], MotionState.ONE_HAND_SWORD);
-			SetAnimatorController(oneHandController);
-		}
 
-        
-
-        Control();
+		Control();
 		Move();
 	}
 
@@ -405,4 +432,42 @@ void OnLevelWasLoaded(int level)
 	{
 		return maxHp;
 	}
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+			stream.SendNext(weaponState);
+        }
+        else
+        {
+			this.weaponState = (int)stream.ReceiveNext();
+            if (this.weaponState == 1)//한손검
+            {
+                /*			ChangeWeapon(rightHandEquip, rightWeapons[0], MotionState.ONE_HAND_SWORD);
+                            SetAnimatorController(oneHandController);*/
+                this.ChangeWeapon(rightHandEquip, rightWeapons[0], MotionState.ONE_HAND_SWORD);
+                //this.SetAnimatorController(oneHandController);
+                animator.SetInteger("PlayerType", 0);
+            }
+
+            if (this.weaponState == 2)//두손검
+            {
+                /*			ChangeWeapon(rightHandEquip, rightWeapons[1], MotionState.TWO_HAND_SWORD);
+                            SetAnimatorController(twoHandController);*/
+                this.ChangeWeapon(rightHandEquip, rightWeapons[1], MotionState.TWO_HAND_SWORD);
+                //this.SetAnimatorController(twoHandController);
+                animator.SetInteger("PlayerType", 1);
+            }
+
+            if (this.weaponState == 3)//방패
+            {
+                /*			ChangeWeapon(leftHandEquip, leftWeapons[0], MotionState.ONE_HAND_SWORD);
+                            SetAnimatorController(oneHandController);*/
+                this.ChangeWeapon(leftHandEquip, leftWeapons[0], MotionState.ONE_HAND_SWORD);
+                //this.SetAnimatorController(oneHandController);
+                animator.SetInteger("PlayerType", 0);
+            }
+        }
+    }
 }

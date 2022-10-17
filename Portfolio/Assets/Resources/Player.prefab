@@ -3630,7 +3630,7 @@ Animator:
   m_GameObject: {fileID: 7814781403905567959}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b69174d668ba02d44b14a084b217670a, type: 3}
-  m_Controller: {fileID: 9100000, guid: 909526e1eda201347b72db41532b76ab, type: 2}
+  m_Controller: {fileID: 9100000, guid: 04ecaeb12a96f164eab430273a6c967f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -3688,16 +3688,17 @@ MonoBehaviour:
   - {fileID: 7814781403905580913}
   - {fileID: 7814781403905481173}
   - {fileID: 7814781403905539225}
-  selectedModelNum: 0
+  selectedModelNum: 1
   walkSpeed: 5
   runSpeed: 10
   rotSpeed: 100
   playerUiPrefab: {fileID: 4697364290611213726, guid: d4338ccdb7c794149b50da1c117a26b7, type: 3}
+  weaponState: 0
+  playerType: 0
   attackCount: 0
   maxHp: 500
   curHp: 500
-  oneHandController: {fileID: 9100000, guid: be435db415ee7a543a9c6b43544384ae, type: 2}
-  twoHandController: {fileID: 9100000, guid: 909526e1eda201347b72db41532b76ab, type: 2}
+  motionState: 0
   rightHandEquip: {fileID: 4460028985558288874}
   leftHandEquip: {fileID: 9179897045736734320}
   rightWeapons:
@@ -3787,6 +3788,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 2586143591670369727}
   - {fileID: 8868556587884512266}
   - {fileID: 6098235053818745606}
   sceneViewId: 0
@@ -3847,6 +3849,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 2
     Name: PlayerHitted
+  - Type: 3
+    SynchronizeType: 0
+    Name: PlayerType
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

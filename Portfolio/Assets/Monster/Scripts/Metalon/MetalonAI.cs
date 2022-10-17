@@ -5,7 +5,7 @@ using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
-using static UnityEditor.Progress;
+
 
 public class MetalonAI : MonsterAI
 {
