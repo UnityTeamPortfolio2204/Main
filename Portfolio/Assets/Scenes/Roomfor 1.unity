@@ -612,10 +612,10 @@ MonoBehaviour:
     Name: MetalonSkill
   - Type: 9
     SynchronizeType: 2
-    Name: MetalonDamaged
+    Name: Damaged
   - Type: 9
     SynchronizeType: 2
-    Name: MetalonDead
+    Name: Dead
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -634,15 +634,27 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 406433132}
+  - {fileID: 406433134}
   - {fileID: 406433131}
+  - {fileID: 406433132}
   sceneViewId: 3
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &406433134 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5864354158030210371, guid: 7f931d4b5c97d194d8726ddf5acdd440, type: 3}
+  m_PrefabInstance: {fileID: 406433129}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406433130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96344319768271b47aeb7bd0dcea425f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &555728200
 GameObject:
   m_ObjectHideFlags: 0
@@ -1179,10 +1191,10 @@ MonoBehaviour:
     Name: MetalonSkill
   - Type: 9
     SynchronizeType: 2
-    Name: MetalonDamaged
+    Name: Damaged
   - Type: 9
     SynchronizeType: 2
-    Name: MetalonDead
+    Name: Dead
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -1217,15 +1229,27 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 825834072}
+  - {fileID: 825834074}
   - {fileID: 825834071}
+  - {fileID: 825834072}
   sceneViewId: 4
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &825834074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1907402004, guid: e9a03d46b76afe246a9ffd58d255bb65, type: 3}
+  m_PrefabInstance: {fileID: 825834069}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825834070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96344319768271b47aeb7bd0dcea425f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1038812565
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,10 +1418,10 @@ MonoBehaviour:
     Name: MetalonSkill
   - Type: 9
     SynchronizeType: 2
-    Name: MetalonDamaged
+    Name: Damaged
   - Type: 9
     SynchronizeType: 2
-    Name: MetalonDead
+    Name: Dead
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -1432,15 +1456,27 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 1070041885}
+  - {fileID: 1070041887}
   - {fileID: 1070041884}
+  - {fileID: 1070041885}
   sceneViewId: 5
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1070041887 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1055853179, guid: f88c6ad57910d8648807bcf0c131f49d, type: 3}
+  m_PrefabInstance: {fileID: 1070041882}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070041883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96344319768271b47aeb7bd0dcea425f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1331878297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1778,10 +1814,10 @@ MonoBehaviour:
     Name: GiantAttack
   - Type: 9
     SynchronizeType: 2
-    Name: GiantDamaged
+    Name: Damaged
   - Type: 9
     SynchronizeType: 2
-    Name: GiantDead
+    Name: Dead
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -1816,15 +1852,27 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 1566655200}
+  - {fileID: 1566655202}
   - {fileID: 1566655199}
+  - {fileID: 1566655200}
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1566655202 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2640830209375016509, guid: aef0b1bf09a88e74093f5ba9d483e2c8, type: 3}
+  m_PrefabInstance: {fileID: 1566655197}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566655198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87fc6eedc4dc760408d20901510d0945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1605307262
 GameObject:
   m_ObjectHideFlags: 0
