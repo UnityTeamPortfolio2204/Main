@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class GiantAI : MonsterAI
+public class GiantAI : MonsterAI, IPunObservable
 { 
     private readonly int hashSpeed = Animator.StringToHash("Speed");
     private readonly int hashAttack = Animator.StringToHash("GiantAttack");
@@ -139,22 +140,41 @@ public class GiantAI : MonsterAI
         attackCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
     }
 
+    [PunRPC]
     public override void Damaged(float damage)
     {
         if (isDead) return;
 
         if (curHp < 0.0f)
+        {
+/*            PhotonView pv = this.photonView;
+            pv.RPC("Dead", RpcTarget.All);*/
             Dead();
+        }
+            
 
         base.Damaged(damage);
 
         animator.SetTrigger(hashDamaged);
     }
 
+    [PunRPC]
     protected override void Dead()
     {
         base.Dead();
 
         animator.SetTrigger(hashDead);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 }

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class WeaponInfo : MonoBehaviour
+public class WeaponInfo : MonoBehaviourPunCallbacks, IPunObservable
 {
 	[SerializeField]
 	private float offensePower; // 무기 공격력
@@ -23,9 +24,12 @@ public class WeaponInfo : MonoBehaviour
 		if (target.gameObject.CompareTag("Monster"))
 		{
 			CheckTargetDamaged(target.gameObject);
+			
+
 		}
 	}
 
+	
 	private void CheckTargetDamaged(GameObject target)
 	{
 		foreach (GameObject targetMonster in targetMonsters)
@@ -41,7 +45,9 @@ public class WeaponInfo : MonoBehaviour
 			if (targetMonsters[count] == null)
 			{
 				targetMonsters[count] = target;
-				target.gameObject.GetComponent<MonsterAI>().Damaged(offensePower * skillCoefficient); // 몬스터 스크립트로 교체
+				PhotonView pv = target.GetPhotonView();
+				pv.RPC("Damaged", RpcTarget.All, offensePower * skillCoefficient);
+                //target.gameObject.GetComponent<MonsterAI>().Damaged(offensePower * skillCoefficient); // 몬스터 스크립트로 교체
 
 				// 사운드 및 이펙트
 
@@ -68,4 +74,15 @@ public class WeaponInfo : MonoBehaviour
 	{
 		skillCoefficient = value;
 	}
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+
+        }
+        else
+        {
+        }
+    }
 }

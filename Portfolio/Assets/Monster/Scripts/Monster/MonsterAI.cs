@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class MonsterAI : MonoBehaviour
+public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
 {
     public enum State
     {
@@ -64,6 +66,7 @@ public class MonsterAI : MonoBehaviour
         isAttack = false;
     }
 
+    [PunRPC]
     virtual public void Damaged(float damage)
     {
         if (isDead) return;
@@ -88,5 +91,15 @@ public class MonsterAI : MonoBehaviour
         monsterMove.Stop();
 
         state = State.DEAD;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+        }
+        else
+        {
+        }
     }
 }
