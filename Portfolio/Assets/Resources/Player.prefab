@@ -3688,7 +3688,7 @@ MonoBehaviour:
   - {fileID: 7814781403905580913}
   - {fileID: 7814781403905481173}
   - {fileID: 7814781403905539225}
-  selectedModelNum: 1
+  selectedModelNum: 0
   walkSpeed: 5
   runSpeed: 10
   rotSpeed: 100

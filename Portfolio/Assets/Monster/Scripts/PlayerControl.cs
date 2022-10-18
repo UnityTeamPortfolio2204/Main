@@ -26,6 +26,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField]
     private GameObject playerUiPrefab;
     public static GameObject LocalPlayerInstance;
+	
 
     [SerializeField]
     private int weaponState = 0;
@@ -106,7 +107,8 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
 
         }
 
-        DontDestroyOnLoad(this.gameObject);
+		this.selectedModelNum = ModelNumber.LocalModelNumber.GetComponent<ModelNumber>().GetModelNumber();
+        //DontDestroyOnLoad(this.gameObject);
     }
 
 	private void Start()
@@ -438,6 +440,7 @@ void OnLevelWasLoaded(int level)
         if (stream.IsWriting)
         {
 			stream.SendNext(weaponState);
+			stream.SendNext(selectedModelNum);
         }
         else
         {
@@ -468,6 +471,10 @@ void OnLevelWasLoaded(int level)
                 //this.SetAnimatorController(oneHandController);
                 animator.SetInteger("PlayerType", 0);
             }
+
+            models[this.selectedModelNum].SetActive(false);
+			this.selectedModelNum = (int)stream.ReceiveNext();
+            models[this.selectedModelNum].SetActive(true);
         }
     }
 }

@@ -23,14 +23,16 @@ public class WeaponInfo : MonoBehaviourPunCallbacks, IPunObservable
 	{
 		if (target.gameObject.CompareTag("Monster"))
 		{
-			CheckTargetDamaged(target.gameObject);
+            /*PhotonView pv = this.gameObject.GetPhotonView();
+            pv.RPC("CheckTargetDamaged", RpcTarget.All, target.gameObject);*/
+            CheckTargetDamaged(target.gameObject);
 			
 
 		}
 	}
 
-	
-	private void CheckTargetDamaged(GameObject target)
+    
+    private void CheckTargetDamaged(GameObject target)
 	{
 		foreach (GameObject targetMonster in targetMonsters)
 		{
@@ -45,9 +47,7 @@ public class WeaponInfo : MonoBehaviourPunCallbacks, IPunObservable
 			if (targetMonsters[count] == null)
 			{
 				targetMonsters[count] = target;
-				PhotonView pv = target.GetPhotonView();
-				pv.RPC("Damaged", RpcTarget.All, offensePower * skillCoefficient);
-                //target.gameObject.GetComponent<MonsterAI>().Damaged(offensePower * skillCoefficient); // 몬스터 스크립트로 교체
+                target.gameObject.GetComponent<MonsterAI>().Damaged(offensePower * skillCoefficient); // 몬스터 스크립트로 교체
 
 				// 사운드 및 이펙트
 

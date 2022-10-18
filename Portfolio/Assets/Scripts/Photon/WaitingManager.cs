@@ -15,6 +15,15 @@ public class WaitingManager : MonoBehaviourPun
     private Button leave;
     [SerializeField]
     private Text playerCount;
+    [SerializeField]
+    private Slider modelNumber;
+
+
+
+    [SerializeField]
+    private GameObject _modelSelector;
+
+    private GameObject modelSelector;
     private void Start()
     {
 
@@ -22,6 +31,12 @@ public class WaitingManager : MonoBehaviourPun
         if (!PhotonNetwork.IsMasterClient)
         {
             gameStart.gameObject.SetActive(false);
+        }
+
+        if (ModelNumber.LocalModelNumber == null)
+        {
+            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+            modelSelector = PhotonNetwork.Instantiate(this._modelSelector.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
         }
     }
 
@@ -37,6 +52,8 @@ public class WaitingManager : MonoBehaviourPun
 
     public void GameStart()
     {
+        modelSelector.GetComponent<ModelNumber>().SetModelNumber((int)modelNumber.value);
+        PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel("Roomfor 1");
     }
     public void LeaveRoom()
@@ -44,5 +61,10 @@ public class WaitingManager : MonoBehaviourPun
         PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene(0);
 
+    }
+
+    public int GetModelNumber()
+    {
+        return (int)modelNumber.value;
     }
 }

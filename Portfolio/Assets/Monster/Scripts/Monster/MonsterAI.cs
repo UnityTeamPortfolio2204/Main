@@ -23,6 +23,8 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     protected bool isDead = false;
     protected bool isDamaged = false;
     protected bool isAttack = false;
+    private readonly int hashDamaged = Animator.StringToHash("Damaged");
+    private readonly int hashDead = Animator.StringToHash("Dead");
 
     protected State state = State.PATROL;
 
@@ -66,7 +68,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         isAttack = false;
     }
 
-    [PunRPC]
+    
     virtual public void Damaged(float damage)
     {
         if (isDead) return;
@@ -74,10 +76,17 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         if (isAttack)
             isAttack = false;
 
-        isDamaged = true;
-        curHp -= damage;
+        PhotonView pv = this.gameObject.GetPhotonView();
+        pv.RPC("PDamage", RpcTarget.All, damage);
+        /*        isDamaged = true;
+                curHp -= damage;
 
-        monsterMove.Stop();
+                monsterMove.Stop();*/
+        if (curHp <= 0)
+        {
+            pv.RPC("Dead", RpcTarget.All);
+        }
+        animator.SetTrigger(hashDamaged);
     }
 
     virtual protected void EndDamaged()
@@ -85,12 +94,14 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         isDamaged = false;
     }
 
-    virtual protected void Dead()
+    [PunRPC]
+    public void Dead()
     {
         isDead = true;
         monsterMove.Stop();
 
         state = State.DEAD;
+        animator.SetTrigger(hashDead);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -101,5 +112,14 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
         }
+    }
+
+    [PunRPC]
+    public void PDamage(float damage)
+    {
+        isDamaged = true;
+        curHp -= damage;
+
+        monsterMove.Stop();
     }
 }

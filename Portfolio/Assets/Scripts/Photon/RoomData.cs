@@ -44,6 +44,14 @@ public class RoomData : MonoBehaviour
         RoomInfoText = GetComponentInChildren<Text>();
         userId = GameObject.Find("InputID").GetComponent<InputField>();
     }
+
+    private void Update()
+    {
+        if (!this.RoomInfo.IsOpen)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
     #endregion
 
     #region Public Methods

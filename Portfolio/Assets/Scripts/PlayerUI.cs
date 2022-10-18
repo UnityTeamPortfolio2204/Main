@@ -26,9 +26,7 @@ public class PlayerUI : MonoBehaviour
 
     #region Private Fields Messages
     private PlayerControl target;
-    private float characterControllerHeight = 0f;
-    private Transform targetTransform;
-    private Vector3 targetPosition;
+
 
     private float currentHealth;
     private float maxHealth;
@@ -84,13 +82,6 @@ public class PlayerUI : MonoBehaviour
         Debug.Log("UI Create");
         target = _target;
         
-        
-
-        CharacterController _characterController = _target.GetComponent<CharacterController>();
-        if(_characterController != null)
-        {
-            characterControllerHeight = _characterController.height;
-        }
 
         if(playerNameText != null)
         {

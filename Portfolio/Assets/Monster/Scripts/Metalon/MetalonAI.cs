@@ -14,7 +14,7 @@ public class MetalonAI : MonsterAI
     private readonly int hashSpeed = Animator.StringToHash("Speed");
     private readonly int hashStabAttack = Animator.StringToHash("MetalonAttack");
     private readonly int hashSkillAttack = Animator.StringToHash("MetalonSkill");
-    private readonly int hashDamaged = Animator.StringToHash("MetalonDamaged");
+    private readonly int hashDamaged = Animator.StringToHash("Damaged");
     private readonly int hashDead = Animator.StringToHash("MetalonDead");
 
     private MetalonAttackCollider attackCollider;
@@ -160,7 +160,7 @@ public class MetalonAI : MonsterAI
         skillCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
     }
 
-    public override void Damaged(float damage)
+/*    public override void Damaged(float damage)
     {
         if (isDead) return;
 
@@ -169,17 +169,17 @@ public class MetalonAI : MonsterAI
 
         base.Damaged(damage);
         animator.SetTrigger(hashDamaged);
-    }
+    }*/
 
-    protected override void Dead()
+/*    protected override void Dead()
     {
         base.Dead();
 
         animator.SetTrigger(hashDead);
 
-/*        Item TEMP = this.gameObject.GetComponent<Item>();
+*//*        Item TEMP = this.gameObject.GetComponent<Item>();
         TEMP.gameObject.SetActive(true);
         TEMP.gameObject.transform.position = this.gameObject.transform.position + new Vector3(1, 0, 0);
-*/
-    }
+*//*
+    }*/
 }

@@ -7,8 +7,7 @@ public class GiantAI : MonsterAI, IPunObservable
 { 
     private readonly int hashSpeed = Animator.StringToHash("Speed");
     private readonly int hashAttack = Animator.StringToHash("GiantAttack");
-    private readonly int hashDamaged = Animator.StringToHash("GiantDamaged");
-    private readonly int hashDead = Animator.StringToHash("GiantDead");
+
 
     private GiantAttackCollider attackCollider;
 
@@ -140,15 +139,15 @@ public class GiantAI : MonsterAI, IPunObservable
         attackCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
     }
 
-    [PunRPC]
-    public override void Damaged(float damage)
+    
+/*    public override void Damaged(float damage)
     {
         if (isDead) return;
 
         if (curHp < 0.0f)
         {
-/*            PhotonView pv = this.photonView;
-            pv.RPC("Dead", RpcTarget.All);*/
+*//*            PhotonView pv = this.photonView;
+            pv.RPC("Dead", RpcTarget.All);*//*
             Dead();
         }
             
@@ -157,14 +156,14 @@ public class GiantAI : MonsterAI, IPunObservable
 
         animator.SetTrigger(hashDamaged);
     }
-
-    [PunRPC]
-    protected override void Dead()
+*/
+    
+    /*protected override void Dead()
     {
         base.Dead();
 
         animator.SetTrigger(hashDead);
-    }
+    }*/
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
