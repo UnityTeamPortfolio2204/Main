@@ -8,6 +8,7 @@ public class ModelNumber : MonoBehaviourPun
 {
     private int modelNumber = 0;
     public static GameObject LocalModelNumber;
+    public int test;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,7 @@ public class ModelNumber : MonoBehaviourPun
     public void SetModelNumber(int _value)
     {
         modelNumber = _value;
+        test = _value;
     }
     
     public int GetModelNumber()

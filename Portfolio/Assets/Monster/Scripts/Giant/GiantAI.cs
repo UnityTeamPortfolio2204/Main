@@ -8,7 +8,7 @@ public class GiantAI : MonsterAI, IPunObservable
     private readonly int hashSpeed = Animator.StringToHash("Speed");
     private readonly int hashAttack = Animator.StringToHash("GiantAttack");
 
-
+    private bool targetNull = false;
     private GiantAttackCollider attackCollider;
 
     protected override void Awake()

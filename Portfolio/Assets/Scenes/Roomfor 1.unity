@@ -521,7 +521,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4215789226532830, guid: 7f931d4b5c97d194d8726ddf5acdd440, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4215789226532830, guid: 7f931d4b5c97d194d8726ddf5acdd440, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1116,7 +1116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4673369876368086, guid: e9a03d46b76afe246a9ffd58d255bb65, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4673369876368086, guid: e9a03d46b76afe246a9ffd58d255bb65, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1343,7 +1343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4444695180855720, guid: f88c6ad57910d8648807bcf0c131f49d, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4444695180855720, guid: f88c6ad57910d8648807bcf0c131f49d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1736,6 +1736,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1196517939, guid: aef0b1bf09a88e74093f5ba9d483e2c8, type: 3}
+      propertyPath: m_Mass
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1196517939, guid: aef0b1bf09a88e74093f5ba9d483e2c8, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7254013775423901812, guid: aef0b1bf09a88e74093f5ba9d483e2c8, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1813,10 +1821,10 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: GiantAttack
   - Type: 9
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: Damaged
   - Type: 9
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: Dead
   m_SynchronizeLayers:
   - SynchronizeType: 0
@@ -2003,7 +2011,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   victory: {fileID: 1996712101}
   defeat: {fileID: 335917978}
-  playerPrefab: {fileID: 7814781403905567959, guid: 9b02ffa3ade02b84d8f5cf9be301a43b, type: 3}
+  playerPrefab: {fileID: 7814781403905567959, guid: 002436d327ac1ed44939116f7da5f9e4, type: 3}
   Item: {fileID: 6111568392434365247, guid: 1487605f7825aa14882597329df72020, type: 3}
 --- !u!4 &1797817389
 Transform:

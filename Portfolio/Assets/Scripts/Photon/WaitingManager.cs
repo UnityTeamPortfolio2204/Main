@@ -17,6 +17,7 @@ public class WaitingManager : MonoBehaviourPun
     private Text playerCount;
     [SerializeField]
     private Slider modelNumber;
+    public int test;
 
 
 
@@ -38,6 +39,7 @@ public class WaitingManager : MonoBehaviourPun
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             modelSelector = PhotonNetwork.Instantiate(this._modelSelector.name, new Vector3(0f, 0f, 0f), Quaternion.identity, 0);
         }
+        test = (int)modelNumber.value;
     }
 
     private void Update()
@@ -48,11 +50,13 @@ public class WaitingManager : MonoBehaviourPun
         }
         players = PhotonNetwork.PlayerList;
         playerCount.text = $"{players.Length}/5";
+        test = (int)modelNumber.value;
+        modelSelector.GetComponent<ModelNumber>().SetModelNumber((int)modelNumber.value);
     }
 
     public void GameStart()
     {
-        modelSelector.GetComponent<ModelNumber>().SetModelNumber((int)modelNumber.value);
+        
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel("Roomfor 1");
     }

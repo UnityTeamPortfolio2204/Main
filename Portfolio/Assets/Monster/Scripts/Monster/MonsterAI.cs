@@ -86,7 +86,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             pv.RPC("Dead", RpcTarget.All);
         }
-        animator.SetTrigger(hashDamaged);
+        
     }
 
     virtual protected void EndDamaged()
@@ -121,5 +121,6 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         curHp -= damage;
 
         monsterMove.Stop();
+        animator.SetTrigger(hashDamaged);
     }
 }

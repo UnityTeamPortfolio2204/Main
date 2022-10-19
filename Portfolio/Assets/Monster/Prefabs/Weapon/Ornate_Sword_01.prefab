@@ -13,13 +13,14 @@ GameObject:
   - component: {fileID: 5149678756780602130}
   - component: {fileID: 8730241528886208681}
   - component: {fileID: -3720488834985138378}
+  - component: {fileID: 7150367951305616200}
   m_Layer: 0
   m_Name: Ornate_Sword_01
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5149678756782936428
 Transform:
   m_ObjectHideFlags: 0
@@ -27,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5149678756782864274}
-  m_LocalRotation: {x: -0.2705979, y: 0.65328157, z: -0.65328145, w: 0.2705982}
+  m_LocalRotation: {x: -0.27059805, y: 0.6532815, z: -0.6532815, w: 0.27059805}
   m_LocalPosition: {x: 0.000033302633, y: -0.00002935695, z: 0.000011687093}
   m_LocalScale: {x: 100.000015, y: 100.00002, z: 100}
   m_ConstrainProportionsScale: 0
@@ -111,3 +112,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offensePower: 10
+  targetMonsters: []
+--- !u!114 &7150367951305616200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5149678756782864274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: -3720488834985138378}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
