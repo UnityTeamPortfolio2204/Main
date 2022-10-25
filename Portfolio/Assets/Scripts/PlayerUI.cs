@@ -20,6 +20,10 @@ public class PlayerUI : MonoBehaviour
     private Text maxHealthText;
     [SerializeField]
     private Vector3 screenOffset = new Vector3(0f, 30f, 0f);
+    [SerializeField]
+    private Image weaponImage;
+    [SerializeField]
+    private List<Sprite> weaponImages = new List<Sprite>();
 
 
     #endregion
@@ -30,6 +34,8 @@ public class PlayerUI : MonoBehaviour
 
     private float currentHealth;
     private float maxHealth;
+
+    private int weaponType = 0;//0. 맨손, 1. 한손검  2. 두손검 3. 도끼
 
     #endregion
 
@@ -101,6 +107,12 @@ public class PlayerUI : MonoBehaviour
             targetPosition.y += characterControllerHeight;
             this.transform.position = Camera.main.WorldToScreenPoint(targetPosition) + screenOffset;
         }*/
+    }
+
+    public void SetWeapon(int weapon)
+    {
+        weaponImage.sprite = weaponImages[weapon];
+
     }
 
     public Text GetName()

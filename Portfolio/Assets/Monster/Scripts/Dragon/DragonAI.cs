@@ -1,58 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.AI;
 
-public class DragonAI : MonoBehaviour
+public class DragonAI : MonsterAI
 {
-    private enum State
-    {
-        IDLE, TRACE, ATTACK, DAMAGED, DEAD
-    }
+    private readonly int hashScreaming = Animator.StringToHash("DragonScream");
 
     [SerializeField]
-    private float attackRange = 2.0f;
+    protected float clawCoolTime = 5.0f;
+    public float clawCoolDown = 0.0f;
     [SerializeField]
-    private float traceRange = 10.0f;
+    protected float flameCoolTime = 8.0f;
+    public float flameCoolDown = 0.0f;
+    [SerializeField]
+    protected float flyFlameCoolTime = 10.0f;
+    public float flyFlameCoolDown = 0.0f;
 
-    private bool isAttack = false;
-    private bool isDamaged = false;
-    private bool isDead = false;
+    private bool isScreaming = false;
 
-    private State state = State.IDLE;
-
-    private Transform target;
-
-    private Animator animator;
-    private DragonMove dragonMove;
-
-    private WaitForSeconds checkStateTime;
-
-    private readonly int hashSpeed = Animator.StringToHash("Speed");
-    private readonly int hashAttack = Animator.StringToHash("DragonAttack");
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        dragonMove = GetComponent<DragonMove>();
-
-        checkStateTime = new WaitForSeconds(0.1f);
-    }
+    private float rotSpeed = 1.0f;
 
     private void Start()
     {
-        //target = GameObject.FindGameObjectWithTag("Player").transform;
-
         StartCoroutine(CheckState());
         StartCoroutine(Action());
     }
-
     private IEnumerator CheckState()
     {
         while (!isDead)
         {
             if (state == State.DEAD) yield break;
 
+            if (isDamaged) yield return checkStateTime;
+
             if (state == State.ATTACK)
+            {
+                yield return null;
+                continue;
+            }
+
+            if(state == State.SCREAM)
             {
                 yield return null;
                 continue;
@@ -82,7 +71,9 @@ public class DragonAI : MonoBehaviour
         {
             yield return checkStateTime;
 
-            animator.SetFloat(hashSpeed, dragonMove.speed);
+            if (isDamaged) yield return checkStateTime;
+
+            animator.SetFloat(hashSpeed, monsterMove.speed);
 
             if (target == null)
             {
@@ -92,53 +83,92 @@ public class DragonAI : MonoBehaviour
 
             switch (state)
             {
+                case State.IDLE:
+                    monsterMove.Stop();
+                    break;
+                case State.SCREAM:
+                    Screaming();
+                    monsterMove.Stop();
+                    break;
                 case State.TRACE:
-                    dragonMove.traceTarget = target.position;
+                    monsterMove.traceTarget = target.position;
                     break;
                 case State.ATTACK:
-                    dragonMove.Stop();
-                    Attack();
-                    break;
-                case State.DAMAGED:
+                    monsterMove.Stop();
+
+                    if (isAttack) yield return checkStateTime;
+
+                    if(flyFlameCoolDown > flyFlameCoolTime)
+                    {
+                        Attack("DragonFlyFlame", AttackType.SKILL3);
+                        flyFlameCoolDown = 0.0f;
+                    }
+                    else if(flameCoolDown > flameCoolTime)
+                    {
+                        Attack("DragonFlameAttack", AttackType.SKILL2);
+                        flameCoolDown = 0.0f;
+                    }
+                    else if(clawCoolDown > clawCoolTime)
+                    {
+                        Attack("DragonClawAttack", AttackType.SKILL);
+                        clawCoolDown = 0.0f;
+                    }
+                    else if(coolDown > coolTime)
+                    {
+                        Attack("DragonNormalAttack", AttackType.NORMAL);
+                        coolDown = 0.0f;
+                    }
                     break;
                 case State.DEAD:
+                    Dead();
                     break;
             }
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void Update()
     {
-        if (!other.CompareTag("Player")) return;
+        CheckDead();
 
-        target = other.transform;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (!other.CompareTag("Player")) return;
-
-        if (other.gameObject == target.gameObject)
+        if (!isAttack && !isDead)
         {
-            target = null;
-            state = State.IDLE;
-            //animator.CrossFade("idle01", 0.2f);
-            dragonMove.Stop();
-        }
+            coolDown += Time.deltaTime;
+            clawCoolDown += Time.deltaTime;
+            flameCoolDown += Time.deltaTime;
+            flyFlameCoolDown += Time.deltaTime;
 
+            if (target != null)
+            {
+                Vector3 direction = target.transform.position - transform.position;
+                Quaternion rot = Quaternion.LookRotation(direction.normalized);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rot, rotSpeed * Time.deltaTime);
+            }
+        }
     }
 
-    private void Attack()
+    private void OnTriggerEnter(Collider other)
     {
         if (isAttack) return;
 
-        animator.SetTrigger(hashAttack);
-        isAttack = true;
+        if (target != null) return;
+
+        if(other.CompareTag("Player"))
+        {
+            state = State.SCREAM;
+        }
     }
 
-    private void EndAttack()
+    private void Screaming()
     {
-        isAttack = false;
+        if (isScreaming) return;
+
+        isScreaming = true;
+        animator.SetTrigger(hashScreaming);
+    }
+
+    private void EndScreaming()
+    {
+        isScreaming = false;
         state = State.IDLE;
     }
 }

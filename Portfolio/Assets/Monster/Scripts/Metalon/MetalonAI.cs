@@ -1,42 +1,29 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-
 
 public class MetalonAI : MonsterAI
 {
     private MetalonMove metalonMove;
 
-    private readonly int hashSpeed = Animator.StringToHash("Speed");
-    private readonly int hashStabAttack = Animator.StringToHash("MetalonAttack");
-    private readonly int hashSkillAttack = Animator.StringToHash("MetalonSkill");
-    private readonly int hashDamaged = Animator.StringToHash("Damaged");
-    private readonly int hashDead = Animator.StringToHash("MetalonDead");
+    public float skillCoolDown = 0.0f;
 
-    private MetalonAttackCollider attackCollider;
-    private MetalonSkillCollider skillCollider;
+    [SerializeField]
+    protected float skillCoolTime = 5.0f;
 
     protected override void Awake()
     {
         base.Awake();
 
         metalonMove = GetComponent<MetalonMove>();
-
-        attackCollider = GetComponentInChildren<MetalonAttackCollider>();
-        skillCollider = GetComponentInChildren<MetalonSkillCollider>();
     }
 
     private void Start()
     {
         StartCoroutine(CheckState());
         StartCoroutine(Action());
-
-        attackCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
-        skillCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
     }
 
     private IEnumerator CheckState()
@@ -94,92 +81,30 @@ public class MetalonAI : MonsterAI
 
                     if (skillCoolDown > 5.0f)
                     {
-                        SkillAttack();
+                        Attack("MetalonSkill", AttackType.SKILL);
+                        skillCoolDown = 0.0f;
                     }
                     else if (coolDown > 2.0f)
                     {
-                        Attack();
+                        Attack("MetalonAttack", AttackType.NORMAL);
+                        coolDown = 0.0f;
                     }
+                    break;
+                case State.DEAD:
+                    Dead();
                     break;
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (isDead) return;
-
-        if (!other.CompareTag("Player")) return;
-
-        if (other.gameObject == target.gameObject)
-        {
-            target = null;
-            state = State.PATROL;
-        }
-    }
-
     private void Update()
     {
-        coolDown += Time.deltaTime;
-        skillCoolDown += Time.deltaTime;
+        CheckDead();
+
+        if (!isAttack && target != null && !isDead)
+        {
+            coolDown += Time.deltaTime;
+            skillCoolDown += Time.deltaTime;
+        }
     }
-
-    protected override void Attack()
-    {
-        if (isDead) return;
-
-        if (isAttack) return;
-
-        base.Attack();
-
-        animator.SetTrigger(hashStabAttack);
-
-        attackCollider.gameObject.GetComponent<SphereCollider>().enabled = true;
-    }
-
-    private void SkillAttack()
-    {
-        if (isAttack) return;
-
-        skillCoolDown = 0.0f;
-        isAttack = true;
-        animator.SetTrigger(hashSkillAttack); 
-    }
-
-    private void EnableSkillCollider()
-    {
-        skillCollider.gameObject.GetComponent<SphereCollider>().enabled = true;
-    }
-
-    protected override void EndAttack()
-    {
-        base.EndAttack();
-        state = State.PATROL;
-
-        attackCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
-        skillCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
-    }
-
-/*    public override void Damaged(float damage)
-    {
-        if (isDead) return;
-
-        if (curHp < 0.0f)
-            Dead();
-
-        base.Damaged(damage);
-        animator.SetTrigger(hashDamaged);
-    }*/
-
-/*    protected override void Dead()
-    {
-        base.Dead();
-
-        animator.SetTrigger(hashDead);
-
-*//*        Item TEMP = this.gameObject.GetComponent<Item>();
-        TEMP.gameObject.SetActive(true);
-        TEMP.gameObject.transform.position = this.gameObject.transform.position + new Vector3(1, 0, 0);
-*//*
-    }*/
 }

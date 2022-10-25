@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     private Button victory;
     [SerializeField]
     private Button defeat;
+    [SerializeField]
+    private List<Transform> playerStartPos;
 
 
     public static GameManager Instance;
@@ -40,7 +42,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             if(PlayerManager.LocalPlayerInstance == null)
             {
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-                PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 7f, 0f), Quaternion.identity, 0);
+                int spawnNum = Random.Range(0, playerStartPos.Count);
+                PhotonNetwork.Instantiate(this.playerPrefab.name, playerStartPos[spawnNum].position, Quaternion.identity, 0);
             }
             else
             {

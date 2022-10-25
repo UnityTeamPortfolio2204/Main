@@ -61,7 +61,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.51589286
-        functionName: EnableCollider
+        functionName: EnableAttackCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

@@ -6,27 +6,25 @@ using UnityEngine;
 
 public class itemInfo : MonoBehaviourPunCallbacks, IPunObservable
 {
+    [SerializeField]
+    private int itemCode;
 
 
-    private void Awake()
+    public int GetCode()
     {
-
+        return itemCode;
     }
 
     [PunRPC]
-    public void SetStatus()
+    public void PSetActive(bool value)
     {
-        //this.gameObject.GetComponentInParent<Item>().SetStatus();
-        this.gameObject.SetActive(false);
-
+        this.gameObject.SetActive(value);
     }
 
     [PunRPC]
-    public void SetThrow(Vector3 pos)
+    public void PSetPos(Vector3 pos)
     {
-        //this.gameObject.GetComponentInParent<Item>().SetThrow(pos);
         this.transform.position = pos;
-        this.gameObject.SetActive(true);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

@@ -6,10 +6,6 @@ using UnityEngine.AI;
 public class MonsterMove: MonoBehaviour
 {
     [SerializeField]
-    protected float patrolSpeed;
-    [SerializeField]
-    protected float patrolRange;
-    [SerializeField]
     protected float traceSpeed;
     [SerializeField]
     protected float rotSpeed;

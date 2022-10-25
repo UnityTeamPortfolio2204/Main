@@ -7,6 +7,11 @@ using UnityEngine.AI;
 
 public class MetalonMove : MonsterMove
 {
+    [SerializeField]
+    protected float patrolSpeed;
+    [SerializeField]
+    protected float patrolRange;
+
     private bool _patrolling;
     public bool patrolling
     {

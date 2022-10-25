@@ -117,6 +117,7 @@ public class WaitingManager : MonoBehaviourPun, IPunObservable
         this.photonView.RPC("SetModelNumber", RpcTarget.All);
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel("Roomfor 1");
+        //PhotonNetwork.LoadLevel("MainGame");
     }
     public void LeaveRoom()
     {

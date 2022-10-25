@@ -1,29 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
-public class GiantAI : MonsterAI, IPunObservable
+public class GiantAI : MonsterAI
 { 
-    private readonly int hashSpeed = Animator.StringToHash("Speed");
-    private readonly int hashAttack = Animator.StringToHash("GiantAttack");
-
-    private bool targetNull = false;
-    private GiantAttackCollider attackCollider;
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        attackCollider = GetComponentInChildren<GiantAttackCollider>();
-    }
-
     private void Start()
     {
         StartCoroutine(CheckState());
         StartCoroutine(Action());
-
-        attackCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
     }
 
     private IEnumerator CheckState()
@@ -76,6 +60,10 @@ public class GiantAI : MonsterAI, IPunObservable
 
             switch (state)
             {
+                case State.IDLE:
+                    animator.CrossFade("Giant@Idle01", 0.2f);
+                    monsterMove.Stop();
+                    break;
                 case State.TRACE:
                     monsterMove.traceTarget = target.position;
                     break;
@@ -84,96 +72,24 @@ public class GiantAI : MonsterAI, IPunObservable
         
                     if (coolDown > 3.0f)
                     { 
-                        Attack();
+                        Attack("GiantAttack", AttackType.NORMAL);
                         coolDown = 0.0f;
                     }
                     break;
-                case State.DAMAGED:
-                    break;
                 case State.DEAD:
+                    Dead();
                     break;
             }
         }
-    }
-    
-    private void OnTriggerExit(Collider other)
-    {
-        if (isDead) return;
-
-        if (!other.CompareTag("Player")) return;
-
-        if (other.gameObject == target.gameObject)
-        {
-            target = null;
-            state = State.IDLE;
-            animator.CrossFade("Giant@Idle01", 0.2f);
-            monsterMove.Stop();
-        }
-            
     }
 
     private void Update()
     {
         if (isDead) return;
 
-        coolDown += Time.deltaTime;
-    }
+        CheckDead();
 
-    protected override void Attack()
-    {
-        base.Attack();
-
-        animator.SetTrigger(hashAttack);
-    }
-
-    private void EnableCollider()
-    {
-        attackCollider.gameObject.GetComponent<SphereCollider>().enabled = true;
-    }
-
-    protected override void EndAttack()
-    {
-        base.EndAttack();
-        state = State.IDLE;
-
-        attackCollider.gameObject.GetComponent<SphereCollider>().enabled = false;
-    }
-
-    
-/*    public override void Damaged(float damage)
-    {
-        if (isDead) return;
-
-        if (curHp < 0.0f)
-        {
-*//*            PhotonView pv = this.photonView;
-            pv.RPC("Dead", RpcTarget.All);*//*
-            Dead();
-        }
-            
-
-        base.Damaged(damage);
-
-        animator.SetTrigger(hashDamaged);
-    }
-*/
-    
-    /*protected override void Dead()
-    {
-        base.Dead();
-
-        animator.SetTrigger(hashDead);
-    }*/
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-
-        }
-        else
-        {
-
-        }
+        if(!isAttack && target != null)
+            coolDown += Time.deltaTime;
     }
 }
