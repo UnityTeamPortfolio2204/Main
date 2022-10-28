@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    #region Priavate Fields
+    #region Serialized Fields
     [SerializeField]
     private Text playerNameText;
     [SerializeField]
@@ -28,7 +28,7 @@ public class PlayerUI : MonoBehaviour
 
     #endregion
 
-    #region Private Fields Messages
+    #region Private Fields
     private PlayerControl target;
 
 
@@ -99,15 +99,6 @@ public class PlayerUI : MonoBehaviour
         maxHealthText.text = maxHealth.ToString();
     }
 
-    public void LateUpdate()
-    {
-     /*   if (targetTransform != null)
-        {
-            targetPosition = targetTransform.position;
-            targetPosition.y += characterControllerHeight;
-            this.transform.position = Camera.main.WorldToScreenPoint(targetPosition) + screenOffset;
-        }*/
-    }
 
     public void SetWeapon(int weapon)
     {

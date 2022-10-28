@@ -10,6 +10,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class WaitingManager : MonoBehaviourPun, IPunObservable
 {
+    #region SerializedField
+    [SerializeField]
+    private AudioSource startAudio;
     private Player[] players;
     [SerializeField]
     private Button gameStart;
@@ -27,16 +30,21 @@ public class WaitingManager : MonoBehaviourPun, IPunObservable
     private Transform scrollContent;
     [SerializeField]
     private GameObject waitingPlayer;
-
-    private Dictionary<string, GameObject> playerListForScroll = new Dictionary<string, GameObject>();
-    WaitForSeconds checkStateTime;
-    bool isCheckPlayer;
-
-
-
     [SerializeField]
     private GameObject _modelSelector;
+    #endregion
+
+    #region PrivateField
+    private Dictionary<string, GameObject> playerListForScroll = new Dictionary<string, GameObject>();
+    WaitForSeconds checkStateTime;
+    private bool isCheckPlayer;
     private GameObject modelSelector;
+    #endregion
+
+
+
+
+    #region MonobehaviourField
     private void Start()
     {
 
@@ -54,7 +62,7 @@ public class WaitingManager : MonoBehaviourPun, IPunObservable
         modelText.text = ((int)modelNumber.value).ToString();
         roomName.text = PhotonNetwork.CurrentRoom.Name;
         isCheckPlayer = true;
-        checkStateTime = new WaitForSeconds(1.0f);
+        checkStateTime = new WaitForSeconds(0.5f);
         StartCoroutine(CheckPlayer());
     }
     
@@ -88,7 +96,9 @@ public class WaitingManager : MonoBehaviourPun, IPunObservable
         }
         
     }
+    #endregion
 
+    #region CoroutineField
     private IEnumerator CheckPlayer()
     {
         while (true)
@@ -111,10 +121,14 @@ public class WaitingManager : MonoBehaviourPun, IPunObservable
             
         }
     }
+    #endregion
 
+
+    #region PublicField
     public void GameStart()
     {
         this.photonView.RPC("SetModelNumber", RpcTarget.All);
+        startAudio.Play();
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel("Roomfor 1");
         //PhotonNetwork.LoadLevel("MainGame");
@@ -124,6 +138,7 @@ public class WaitingManager : MonoBehaviourPun, IPunObservable
         if (PhotonNetwork.IsMasterClient)
         {
             isCheckPlayer = false;
+            StopCoroutine(CheckPlayer());
         }
         this.photonView.RPC("DeletePlayerList", RpcTarget.All, modelSelector.GetPhotonView().Owner.NickName);
         PhotonNetwork.LeaveRoom();
@@ -135,7 +150,10 @@ public class WaitingManager : MonoBehaviourPun, IPunObservable
     {
         return (int)modelNumber.value;
     }
+    #endregion
 
+
+    #region PhotonField
     [PunRPC]
     public void DeletePlayerList(string value)
     {
@@ -153,13 +171,16 @@ public class WaitingManager : MonoBehaviourPun, IPunObservable
         modelSelector.GetComponent<ModelNumber>().SetModelNumber((int)modelNumber.value);
     }
 
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
+
         }
         else
         {
         }
     }
+    #endregion
 }

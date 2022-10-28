@@ -6,15 +6,19 @@ using UnityEngine;
 
 public class itemInfo : MonoBehaviourPunCallbacks, IPunObservable
 {
+    #region SerializeField
     [SerializeField]
     private int itemCode;
+    #endregion
 
-
+    #region PublicMethod
     public int GetCode()
     {
         return itemCode;
     }
+    #endregion
 
+    #region PhotonMethod
     [PunRPC]
     public void PSetActive(bool value)
     {
@@ -38,4 +42,5 @@ public class itemInfo : MonoBehaviourPunCallbacks, IPunObservable
 
         }
     }
+    #endregion
 }

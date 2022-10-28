@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 public class WaitingPlayer : MonoBehaviour
 {
+    #region SerializedField
     [SerializeField]
     private Text playerNameText;
-    // Start is called before the first frame update
-    
+    #endregion
+
+    #region PublicMethod
     public void SetName(string value)
     {
         playerNameText.text = value;
     }
+    #endregion
 }

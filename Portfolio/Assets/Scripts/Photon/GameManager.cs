@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private GameState gameState = GameState.Playing;
 
+    private void Awake()
+    {
+        ParticleManager.instance.CreateParticle();
+    }
     private void Start()
     {
         Instance = this;
