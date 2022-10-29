@@ -53,6 +53,10 @@ MonoBehaviour:
   - ThrowWeapon
   - SetState
   - SetTarget
+  - DragonClawAttack
+  - DragonFlameAttack
+  - DragonFlyFlame
+  - DragonNormalAttack
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

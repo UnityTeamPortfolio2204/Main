@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
-public class DragonAI : MonsterAI
+public class DragonAI : MonsterAI, IPunObservable
 {
     private readonly int hashScreaming = Animator.StringToHash("DragonScream");
 
@@ -101,25 +102,19 @@ public class DragonAI : MonsterAI
 
                     if(flyFlameCoolDown > flyFlameCoolTime)
                     {
-                        Attack("DragonFlyFlame", AttackType.SKILL3);
-                        flyFlameCoolDown = 0.0f;
-                        SoundManager.instance.PlaySFX(SoundKey.DRAGON_ROAR, transform.position);
+                        this.photonView.RPC("DragonFlyFlame", RpcTarget.All);
                     }
                     else if(flameCoolDown > flameCoolTime)
                     {
-                        Attack("DragonFlameAttack", AttackType.SKILL2);
-                        flameCoolDown = 0.0f;
+                        this.photonView.RPC("DragonFlameAttack", RpcTarget.All);
                     }
                     else if(clawCoolDown > clawCoolTime)
                     {
-                        Attack("DragonClawAttack", AttackType.SKILL);
-                        clawCoolDown = 0.0f;
+                        this.photonView.RPC("DragonClawAttack", RpcTarget.All);
                     }
                     else if(coolDown > coolTime)
                     {
-                        Attack("DragonNormalAttack", AttackType.NORMAL);
-                        SoundManager.instance.PlaySFX(SoundKey.DRAGON_BITE, transform.position);
-                        coolDown = 0.0f;
+                        this.photonView.RPC("DragonNormalAttack", RpcTarget.All);
                     }
                     break;
                 case State.DEAD:
@@ -217,4 +212,35 @@ public class DragonAI : MonsterAI
     {
         SoundManager.instance.PlaySFX(SoundKey.DRAGON_DEAD, transform.position);
     }
+
+    #region Photon Pun
+    [PunRPC]
+    private void DragonFlyFlame()
+    {
+        Attack("DragonFlyFlame", AttackType.SKILL3);
+        flyFlameCoolDown = 0.0f;
+        SoundManager.instance.PlaySFX(SoundKey.DRAGON_ROAR, transform.position);
+    }
+    [PunRPC]
+    private void DragonFlameAttack()
+    {
+        Attack("DragonFlameAttack", AttackType.SKILL2);
+        flameCoolDown = 0.0f;
+    }
+    [PunRPC]
+    private void DragonClawAttack()
+    {
+        Attack("DragonClawAttack", AttackType.SKILL);
+        clawCoolDown = 0.0f;
+    }
+    [PunRPC]
+    private void DragonNormalAttack()
+    {
+        Attack("DragonNormalAttack", AttackType.NORMAL);
+        SoundManager.instance.PlaySFX(SoundKey.DRAGON_BITE, transform.position);
+        coolDown = 0.0f;
+    }
+
+    
+    #endregion
 }
