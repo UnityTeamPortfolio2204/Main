@@ -36,11 +36,19 @@ public class ItemThrower : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SetState(bool value)
     {
+        if(dropWeapon == null)
+        {
+            return;
+        }
         dropWeapon.SetActive(value);
     }
     [PunRPC]
     public void ThrowWeapon()
     {
+        if(dropWeapon == null)
+        {
+            return;
+        }
         Debug.Log("Monster Throw Item");
         dropWeapon.transform.position = this.transform.position + this.transform.forward * 3;
         dropWeapon.SetActive(true);

@@ -8,9 +8,10 @@ public class DevButton : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        this.gameObject.SetActive(false);
         if (!PhotonNetwork.IsMasterClient)
         {
-            this.gameObject.SetActive(false);
+            
         }
     }
 

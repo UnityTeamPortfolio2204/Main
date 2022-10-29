@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
     public static GameManager Instance;
     public GameObject playerPrefab;
     public GameObject Item;
+    public MonsterAI boss;
     private enum GameState
     {
         Playing, Victory, Defeat
@@ -27,10 +28,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private GameState gameState = GameState.Playing;
 
-    private void Awake()
-    {
-        ParticleManager.instance.CreateParticle();
-    }
     private void Start()
     {
         Instance = this;
@@ -43,11 +40,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", PhotonNetwork.LogLevel);
 
-            if(PlayerManager.LocalPlayerInstance == null)
+            if(PlayerControl.LocalPlayerInstance == null)
             {
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                 int spawnNum = Random.Range(0, playerStartPos.Count);
-                PhotonNetwork.Instantiate(this.playerPrefab.name, playerStartPos[spawnNum].position, Quaternion.identity, 0);
+                PhotonNetwork.Instantiate(this.playerPrefab.name, playerStartPos[0].position, Quaternion.identity, 0);
             }
             else
             {
@@ -56,11 +53,16 @@ public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
             
         }
 
-        PhotonNetwork.InstantiateRoomObject(Item.name, new Vector3(0f, 2f, 0f), Quaternion.identity, 0);
+        //PhotonNetwork.InstantiateRoomObject(Item.name, new Vector3(0f, 2f, 0f), Quaternion.identity, 0);
     }
 
     private void Update()
     {
+        if(boss.GetState() == MonsterAI.State.DEAD)
+        {
+            gameState = GameState.Victory;
+        }
+
         switch (gameState)
         {
             case GameState.Playing:
